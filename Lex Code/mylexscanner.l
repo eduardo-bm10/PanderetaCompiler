@@ -1,23 +1,35 @@
 %{
-    #include "myscanner.h" 
+    #include<string.h>
+    #include<stdlib.h>
+    #include "myscanner.h"
+    void extern yyerror(char* s);
 %}
 
 %%
-@([a-zA-Z]+[0-9]+"_"+"?")* return IDENTIFIER;
-
-"INT"+"BOOL" return TYPE;
+@([a-zA-Z]+[0-9]+"_"+"?")* {yylval.id = strdup(yytext);return IDENTIFIER;}
 
 "SET"+"Def" return KEYWORD;
 
-[1-9][0-9]* return INTEGER;
+[1-9][0-9]* {yylval.int_val = atoi(yytext);return INTEGER;}
 
-"True"+"False" return BOOLEAN;
+"True"+"False" {yylval.bool_val = strdup(yytext);return BOOLEAN;}
 
-"+"+"-"+"*"+"**"+"/"+"//"+"%" return MATH_OPERATOR;
-
-"Neg"+"T"+"F" return BOOLEAN_OPERATOR;
+"+" {yylval.sum = strdup(yytext);return SUM;}
+"-" {yylval.min = strdup(yytext); return MIN;}
+"*" {yylval.mult = strdup(yytext); return MULT;}
+"%" {yylval.mod = strdup(yytext); return MODULO;}
+"/" {yylval.div = strdup(yytext); return DIV;}
+"//" {yylval.int_div = strdup(yytext); return INT_DIV;}
+"," {yylval.assign = strdup(yytext);return ASSIGN;}
+"Neg"+"T"+"F" {yylval.bool_o = strdup(yytext);return BOOLEAN_OPERATOR;}
+{linefeed} {yylineo++;}
+{whitespace} ;
 %%
 
 int yywrap(void){
     return 1;
+}
+void yyerror(char*s)
+{
+	fprintf(stderr, "ERROR ON LINE %d",yylineo,yytext);
 }
