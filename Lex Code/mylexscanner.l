@@ -1,4 +1,5 @@
 %{
+    #include <stdio.h>
     #include<string.h>
     #include<stdlib.h>
     #include "myscanner.h"
@@ -6,9 +7,9 @@
 %}
 
 %%
-@([a-zA-Z]+[0-9]+"_"+"?")* {yylval.id = strdup(yytext);return IDENTIFIER;}
+@([a-zA-Z]+[0-9]+"_"+"?"){2,9} {yylval.id = strdup(yytext);return IDENTIFIER;}
 
-"SET"+"Def" return KEYWORD;
+"SET"+"Def"+"if"+"else"+"for" {yylval.key = strdup(yytext); return KEYWORD;}
 
 [1-9][0-9]* {yylval.int_val = atoi(yytext);return INTEGER;}
 
@@ -31,5 +32,5 @@ int yywrap(void){
 }
 void yyerror(char*s)
 {
-	fprintf(stderr, "ERROR ON LINE %d",yylineo,yytext);
+	fprintf(stderr, "ERROR ON LINE %d. %s expected.",yylineo,yytext);
 }
