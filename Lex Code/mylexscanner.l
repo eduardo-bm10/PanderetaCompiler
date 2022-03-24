@@ -9,7 +9,12 @@
 %%
 @([a-zA-Z]|[0-9]|.){2,9} {yylval.id = strdup(yytext);return IDENTIFIER;}
 
-"SET"+"Def"+"if"+"else"+"for" {yylval.key = strdup(yytext); return KEYWORD;}
+
+"SET" {yylval.set = strdup(yytext); return SET;}
+"Def" {yylval.def = strdup(yytext); return DEF;}
+"if" {yylval.if = strdup(yytext); return IF;}
+"else" {yylval.else = strdup(yytext); return ELSE;}
+"for" {yylval.for = strdup(yytext); return FOR;}
 
 [1-9][0-9]* {yylval.int_val = atoi(yytext);return INTEGER;}
 
