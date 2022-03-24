@@ -7,7 +7,7 @@
 %}
 
 %%
-@([a-zA-Z]+[0-9]+"_"+"?"){2,9} {yylval.id = strdup(yytext);return IDENTIFIER;}
+@([a-zA-Z]|[0-9]|.){2,9} {yylval.id = strdup(yytext);return IDENTIFIER;}
 
 "SET"+"Def"+"if"+"else"+"for" {yylval.key = strdup(yytext); return KEYWORD;}
 
