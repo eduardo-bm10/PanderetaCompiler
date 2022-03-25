@@ -32,6 +32,9 @@
 {linefeed} {yylineo++;}
 {whitespace} ;
 
+. {yyerror("Unrecognized input");}
+
+
 %%
 
 int yywrap(void){
