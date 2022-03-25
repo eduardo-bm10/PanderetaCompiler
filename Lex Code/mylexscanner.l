@@ -8,9 +8,10 @@
 
 whitespace      [ \t\r\v\f]
 linefeed        \n
+specialsymbols ["?"|"!"|"*"|"#"|"%"|"$"|"&"|"/"|"¿"|"¡"|"_"]
 
 %%
-@([a-zA-Z]|[0-9]|.){2,9} {yylval.id = strdup(yytext);return IDENTIFIER;}
+@([a-zA-Z]|[0-9]|specialsymbols){2,9} {yylval.id = strdup(yytext);return IDENTIFIER;}
 
 "SET" {yylval.set = strdup(yytext); return SET;}
 "Def" {yylval.def = strdup(yytext); return DEF;}
@@ -23,6 +24,8 @@ linefeed        \n
 
 "True"|"False" {yylval.bool_val = strdup(yytext);return BOOLEAN;}
 
+"(" {yylval.oparen = strdup(yytext);return OPENPAREN}
+")" {yylval.cparen = strdup(yytext);return CLOSEPAREN}
 "+" {yylval.sum = strdup(yytext);return SUM;}
 "-" {yylval.min = strdup(yytext); return MIN;}
 "*" {yylval.mult = strdup(yytext); return MULT;}
@@ -32,6 +35,14 @@ linefeed        \n
 "," {yylval.comma = strdup(yytext);return COMMA;}
 "Neg"|"T"|"F" {yylval.bool_o = strdup(yytext);return BOOLEAN_OPERATOR;}
 
+"Abanico" {yylval.abanico = strdup(yytext);return MOVABANICO}
+"Vertical" {yylval.vertical = strdup(yytext);return MOVVERTICAL}
+"Percutor" {yylval.percutor = strdup(yytext);return MOVPERCUTOR}
+"Golpe" {yylval.golpe = strdup(yytext);return MOVGOLPE}
+"Vibrato" {yylval.vibrato = strdup(yytext);return MOVVIBRATO}
+"Metronomo" {yylval.metronomo = strdup(yytext);return MOVMETRONOMO}
+"println!" {yylval.print = strdup(yytext);return PRINT}
+ 
 {linefeed} {yylineo++;}
 {whitespace} ;
 . {invalidToken());}
