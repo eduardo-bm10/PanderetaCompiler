@@ -6,6 +6,9 @@
     void extern yyerror(char* s);
 %}
 
+whitespace      [ \t\r\v\f]
+linefeed        \n
+
 %%
 @([a-zA-Z]|[0-9]|.){2,9} {yylval.id = strdup(yytext);return IDENTIFIER;}
 
@@ -16,7 +19,6 @@
 "for" {yylval.for = strdup(yytext); return FOR;}
 
 [-+]?[1-9][0-9]* {yylval.int_val = atoi(yytext);return NUMBER;}
-
 [-+]?[1-9][0-9]*.[0-9]* {yylval.float_val = atof(yytext);return NUMBER}
 
 "True"|"False" {yylval.bool_val = strdup(yytext);return BOOLEAN;}
@@ -29,9 +31,9 @@
 "//" {yylval.int_div = strdup(yytext); return INT_DIV;}
 "," {yylval.comma = strdup(yytext);return COMMA;}
 "Neg"|"T"|"F" {yylval.bool_o = strdup(yytext);return BOOLEAN_OPERATOR;}
+
 {linefeed} {yylineo++;}
 {whitespace} ;
-
 . {invalidToken());}
 
 
