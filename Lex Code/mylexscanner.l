@@ -32,7 +32,7 @@
 {linefeed} {yylineo++;}
 {whitespace} ;
 
-. {yyerror("Unrecognized input");}
+. {invalidToken());}
 
 
 %%
@@ -43,5 +43,10 @@ int yywrap(void){
 void yyerror(char*s)
 {
 	fprintf(stderr, "ERROR ON LINE %d. %s expected.",yylineo,yytext);
+}
+
+void InvalidToken(){
+    printf("ERROR ON LINE %d : \n %s\n", yylineo, s);
+    exit(0);
 }
 
