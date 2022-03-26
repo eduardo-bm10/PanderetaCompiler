@@ -59,7 +59,7 @@ void yyerror(char*s)
 }
 
 void InvalidToken(){
-    printf("ERROR ON LINE %d : \n %s\n", yylineo, s);
+    printf("ERROR ON LINE %d : \n %s\n", yylineo, yytext);
     exit(0);
 }
 
