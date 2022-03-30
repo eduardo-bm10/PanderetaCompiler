@@ -8,10 +8,10 @@
 
 whitespace      [ \t\r\v\f]
 linefeed        \n
-specialsymbols ["?"|"!"|"*"|"#"|"%"|"$"|"&"|"/"|"¿"|"¡"|"_"]
+
 
 %%
-@([a-zA-Z]|[0-9]|specialsymbols){2,9} {yylval.id = strdup(yytext);return IDENTIFIER;}
+@([a-zA-Z]|[0-9]|"?"|"_"){2,9} {yylval.id = strdup(yytext);return IDENTIFIER;}
 
 "SET" {yylval.set = strdup(yytext); return SET;}
 "Def" {yylval.def = strdup(yytext); return DEF;}
