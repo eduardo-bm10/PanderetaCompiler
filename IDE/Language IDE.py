@@ -34,12 +34,12 @@ class ErrorFrame(tk.Text):
     def __init__(self, master, text_widget):
         super().__init__(master)
         self.text_widget = text_widget
-        self.configure(height=5, bg='black', fg='red')
+        self.configure(bg='black', fg='red')
 
     def show_msg(self, error_msg):
         self.pack(side=tk.BOTTOM)
         self.insert(1.0, error_msg)
-
+        self.configure(width=len(error_msg))
 
 def open_file():
     global gpath
