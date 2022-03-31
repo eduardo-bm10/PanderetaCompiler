@@ -34,6 +34,7 @@ linefeed        \n
 "//" {yylval.int_div = strdup(yytext); return INT_DIV;}
 "," {yylval.comma = strdup(yytext);return COMMA;}
 "Neg"|"T"|"F" {yylval.bool_o = strdup(yytext);return BOOLEAN_OPERATOR;}
+";"  {yylval.semicolon = strdup(yytext);return SEMICOLON}
 
 "Abanico" {yylval.abanico = strdup(yytext);return MOVABANICO}
 "Vertical" {yylval.vertical = strdup(yytext);return MOVVERTICAL}
@@ -43,6 +44,13 @@ linefeed        \n
 "Metronomo" {yylval.metronomo = strdup(yytext);return MOVMETRONOMO}
 "println!" {yylval.print = strdup(yytext);return PRINT}
  
+"A" { yylval.arriba = strdup(yytext);return HACIAARRIBA}
+"B" {yylval.abajo = strdup(yytext);return HACIAABAJO}
+"D" {yylval.derecha = strdupyytext);return HACIADERECHA}
+"I" {yylval.izquierda = strdup(yytext);return HACIAIZQUIERDA}
+"DI" {yylval.derechaizquierda = strdup(yytext);return DERECHAIZQUIERDA}
+"AB" {yylval.arribaabajo = strdup(yytext);return ARRIBAABAJO}
+
 {linefeed} {yylineo++;}
 {whitespace} ;
 . {invalidToken());}

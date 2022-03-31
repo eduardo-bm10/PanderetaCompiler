@@ -34,6 +34,7 @@
     char* int_div;
     char* comma;
     char* bool_o;
+    char* semicolon;
 
     char* abanico;
     char* vertical;
@@ -49,6 +50,5 @@
     char* izquierda;
     char* derechaizquierda;
     char* arribaabajo;
-
 
 }
