@@ -16,12 +16,14 @@
 %union {
     float (float) int_val;
     float float_val;
+    char* bool_val;
+
     char* set;
     char* def;
     char* if;
     char* else;
     char* for;
-    char* bool_val;
+
     char* oparen;
     char* cparen;
     char* sum;
@@ -32,9 +34,21 @@
     char* int_div;
     char* comma;
     char* bool_o;
+
     char* abanico;
     char* vertical;
     char* percutor;
-    char* 
+    char* golpe;
+    char* vibrato;
+    char* metronomo;
+    char* print;
+
+    char* arriba;
+    char* abajo;
+    char* derecha;
+    char* izquierda;
+    char* derechaizquierda;
+    char* arribaabajo;
+
 
 }
