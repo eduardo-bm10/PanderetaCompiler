@@ -32,6 +32,7 @@ linefeed        \n
 "%" {yylval.mod = strdup(yytext); return MODULO;}
 "/" {yylval.div = strdup(yytext); return DIV;}
 "//" {yylval.int_div = strdup(yytext); return INT_DIV;}
+"." {yylval.point = strdup(yytext); return POINT}
 "," {yylval.comma = strdup(yytext);return COMMA;}
 "Neg"|"T"|"F" {yylval.bool_o = strdup(yytext);return BOOLEAN_OPERATOR;}
 ";"  {yylval.semicolon = strdup(yytext);return SEMICOLON}
