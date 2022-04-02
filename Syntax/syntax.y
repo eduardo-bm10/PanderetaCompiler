@@ -83,12 +83,15 @@ assignment
 | arith_funct
 | EXEC routine_id
 
+body_instructions:
+instruction end_line body_instructions
+| instruction end_line
+
 body:
 IF condition body
 | IF condition body ELSE body
 | FOR IDENTIFIER TO num_value STEP num_value body
-| expression
-| instruction 
+| body_instructions
 
 condition:
 BOOLEAN
