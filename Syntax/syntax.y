@@ -55,13 +55,14 @@
 
 %token 
 IDENTIFIER 
-SET DEF IF ELSE FOR 
+SET DEF IF ELSE FOR TO STEP EXEC
 NUMBER BOOLEAN 
 OPENPAREN CLOSEPAREN 
 SUM MIN MULT MODULO DIV INT_DIV 
+MAYOR MENOR IGUAL MAYORIGUAL MENORIGUAL
 POINT COMMA SEMICOLON
 BOOLEAN_OPERATOR
-MOVABANICO MOVVERTICAL MOVPERCUTOR MOVGOLPE MOVVIBRATO MOVMETRONOMO
+PRINCIPAL MOVABANICO MOVVERTICAL MOVPERCUTOR MOVGOLPE MOVVIBRATO MOVMETRONOMO
 PRINT
 HACIAARRIBA HACIAABAJO HACIADERECHA HACIAIZQUIERDA DERECHAIZQUIERDA ARRIBAABAJO
 
@@ -69,22 +70,54 @@ HACIAARRIBA HACIAABAJO HACIADERECHA HACIAIZQUIERDA DERECHAIZQUIERDA ARRIBAABAJO
 
 /* SIMBOLO INICIAL */
 expression: 
-instruction end_line    
+definition 
+| instruction end_line    
+
+definition:
+pandereta_op OPENPAREN pandereta_args CLOSEPAREN
+| routine
 
 instruction:
-assign 
-| pandereta_op OPENPAREN pandereta_args CLOSEPAREN
+assignment 
 | prnt_op
 | arith_funct
+| EXEC routine_id
 
-assign:              
+body_instructions:
+instruction end_line body_instructions
+| instruction end_line
+
+body:
+IF condition body
+| IF condition body ELSE body
+| FOR IDENTIFIER TO num_value STEP num_value body
+| body_instructions
+
+condition:
+BOOLEAN
+| num_value MAYOR num_value
+| num_value MENOR num_value
+| num_value IGUAL num_value
+| num_value MAYORIGUAL num_value
+| num_value MENORIGUAL num_value
+
+routine_id:
+IDENTIFIER 
+| PRINCIPAL
+
+assignment:              
 SET IDENTIFIER value
+
+routine:
+DEF routine_id OPENPAREN args CLOSEPAREN body
 
 value:      
 COMMA num_value 
 | COMMA bool_value 
 | COMMA arith_funct
 | POINT bool_funct  
+
+args:
 
 num_value: NUMBER
 
@@ -125,7 +158,7 @@ HACIAARRIBA
 | ARRIBAABAJO
 
 prnt_op:
-PRINT OPENPAREN CLOSEPAREN
+PRINT OPENPAREN  CLOSEPAREN
 
 %%
 
