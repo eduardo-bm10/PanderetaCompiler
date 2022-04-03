@@ -45,6 +45,8 @@
     char* int_div;
     char* comma;
     char* bool_o;
+    char* openbrack;
+    char* closebrack;
     char* semicolon;
 
     char* abanico;
@@ -71,37 +73,53 @@ NUMBER BOOLEAN
 OPENPAREN CLOSEPAREN 
 SUM MIN MULT MODULO DIV INT_DIV 
 MAYOR MENOR IGUAL MAYORIGUAL MENORIGUAL
+OPENBRACKET CLOSEBRACKET
 POINT COMMA SEMICOLON
 BOOLEAN_OPERATOR
-PRINCIPAL MOVABANICO MOVVERTICAL MOVPERCUTOR MOVGOLPE MOVVIBRATO MOVMETRONOMO
+PRINCIPAL MOVABANICO MOVVERTICAL MOVPERCUTOR MOVGOLPE MOVVIBRATO METRONOMO
+
 PRINT
 HACIAARRIBA HACIAABAJO HACIADERECHA HACIAIZQUIERDA DERECHAIZQUIERDA ARRIBAABAJO
 
 %%
 
 /* SIMBOLO INICIAL */
-expression: 
-definition 
-| instruction end_line    
+program:
+principal
+| definition principal
+| principal definition
+
+principal:
+DEF PRINCIPAL {add('F');} OPENPAREN CLOSEPAREN OPENBRACKET body CLOSEBRACKET
+
+ 
 
 definition:
-pandereta_op OPENPAREN pandereta_args CLOSEPAREN
-| routine
+routine 
+| routine  definition
+
+args:
+NUMBER
+| BOOLEAN
+| NUMBER args
+| BOOLEAN args
+
 
 instruction:
 assignment 
 | prnt_op
 | arith_funct
-| EXEC routine_id
+| EXEC routine_id OPENPAREN args CLOSEPAREN 
+| pandereta_op OPENPAREN pandereta_args CLOSEPAREN
 
 body_instructions:
 instruction end_line body_instructions
 | instruction end_line
 
 body:
-IF condition body
-| IF condition body ELSE body
-| FOR IDENTIFIER TO num_value STEP num_value body
+IF condition OPEN BRACKET body CLOSEBRACKET
+| IF condition OPENBRACKET body CLOSEBRACKET ELSE OPENBRACKET body CLOSEBRACKET
+| FOR IDENTIFIER TO num_value STEP num_value OPENBRACKET body CLOSEBRACKET
 | body_instructions
 
 condition:
@@ -112,15 +130,11 @@ BOOLEAN
 | num_value MAYORIGUAL num_value
 | num_value MENORIGUAL num_value
 
-routine_id:
-IDENTIFIER {add('F');}
-| PRINCIPAL
-
 assignment:              
 SET IDENTIFIER value
 
 routine:
-DEF routine_id OPENPAREN args CLOSEPAREN body
+DEF IDENTIFIER {add('F');} OPENPAREN args CLOSEPAREN OPENBRACKET body CLOSEBRACKET
 
 value:      
 COMMA num_value 

@@ -43,6 +43,8 @@ linefeed        \n
 "." {yylval.point = strdup(yytext); return POINT;}
 "," {yylval.comma = strdup(yytext);return COMMA;}
 "Neg"|"T"|"F" {yylval.bool_o = strdup(yytext);return BOOLEAN_OPERATOR;}
+"{" {yylval.openbrack = strdup(yytext);return OPENBRACKET;}
+"}" {yylval.closebrack = strdup(yytext);return CLOSEBRACKET;}
 ";"  {yylval.semicolon = strdup(yytext);return SEMICOLON;}
 
 "Principal" {yylval.principal = strdup(yytext); return PRINCIPAL;}
@@ -52,8 +54,9 @@ linefeed        \n
 "Percutor" {yylval.percutor = strdup(yytext);return MOVPERCUTOR;}
 "Golpe" {yylval.golpe = strdup(yytext);return MOVGOLPE;}
 "Vibrato" {yylval.vibrato = strdup(yytext);return MOVVIBRATO;}
-"Metronomo" {yylval.metronomo = strdup(yytext);return MOVMETRONOMO;}
+"Metronomo" {yylval.metronomo = strdup(yytext);return METRONOMO;}
 "println!" {yylval.print = strdup(yytext);return PRINT;}
+
  
 "A" { yylval.arriba = strdup(yytext);return HACIAARRIBA;}
 "B" {yylval.abajo = strdup(yytext);return HACIAABAJO;}
@@ -61,6 +64,7 @@ linefeed        \n
 "I" {yylval.izquierda = strdup(yytext);return HACIAIZQUIERDA;}
 "DI" {yylval.derechaizquierda = strdup(yytext);return DERECHAIZQUIERDA;}
 "AB" {yylval.arribaabajo = strdup(yytext);return ARRIBAABAJO;}
+
 
 {linefeed} {yylineo++;}
 {whitespace} ;
