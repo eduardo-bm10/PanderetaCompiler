@@ -22,7 +22,7 @@
 %define parse.lac full
 %define parse.error verbose
 
-%start expression
+%start program
 
 %union {
     float (float) int_val;
