@@ -6,6 +6,17 @@
     extern int yylex();
     extern char* yytext;
     extern int yylineno;
+
+    struct dataType {
+        char * id_name;
+        char * type;
+        int line_number;
+    } symbol_table[500000];
+
+    int count=0;
+    int q;
+    char type[10]
+
 }%
 
 %define parse.lac full
@@ -102,7 +113,7 @@ BOOLEAN
 | num_value MENORIGUAL num_value
 
 routine_id:
-IDENTIFIER 
+IDENTIFIER {add('F');}
 | PRINCIPAL
 
 assignment:              
@@ -119,9 +130,9 @@ COMMA num_value
 
 args:
 
-num_value: NUMBER
+num_value: NUMBER { insert_type_constant("Number"); add('C'); insert_type_variable("Number");}
 
-bool_value: BOOLEAN
+bool_value: BOOLEAN {insert_type_constant("Boolean"); add('C');  insert_type_variable("Boolean");}
 
 operator:
 SUM
@@ -167,6 +178,60 @@ int main()
     return (yyparse());
 }
 
+
+void insert_type_variable(*char datatype){
+    strcpy(type, data_type);
+    symbol_table_table[count-1].data_type=[type];
+}
+
+void insert_type_constant(*char datatype){
+    strcpy(type, datatype);
+}
+
+
+
+int search(char *type){
+    int i;
+    for(i=count-1;i>=0;i--){
+        if(strcmp(symbol_table[i].id_name, type)==0){
+            return -1;
+            break;
+        }
+    }
+}
+void add(char c){
+    q =search;
+    if(!q) {
+        if( c == 'K'){
+            symbol_table[count].id_name=strdup(yytext);
+            symbol_table[count].data_type=strdup("N/A");
+            symbol_table[count].line_number=yylineno;
+            symbol_table[count].type=strdup("Keyword\t");
+            count++;
+        }
+        else if(c=='V') {
+            symbol_table[count].id_name=strdup(yytext);
+            symbol_table[count].data_type=strdup("Pending");
+            symbol_table[count].line_number=yylineno;
+            symbol_table[count].type=strdup("Variable");
+            count++;
+        }
+        else if(c=='F'){
+            symbol_table[count].id_name=strdup(yytext);
+            symbol_table[count].data_type=strdup("N/A");
+            symbol_table[count].line_number=yylineno;
+            symbol_table[count].type=strdup("Funcion");
+            count++
+        } 
+        else if(c=='C'){
+            symbol_table[count].id_name=strdup(yytext);
+            symbol_table[count].data_type=strdup(type);
+            symbol_table[count].line_number=yylineno;
+            symbol_table[count].type=strdup("Constant");
+            count++;
+        }
+    }
+}
 void yyerror(char*s) {
     fprintf(stderr, "SYNTAX ERROR ON LINE %d.", yylineno)
 }
