@@ -29,6 +29,8 @@
     float float_val;
     char* bool_val;
 
+    char* stringconst;
+
     char* set;
     char* def;
     char* if;
@@ -68,6 +70,7 @@
 
 %token 
 IDENTIFIER 
+STRINGCONST
 SET DEF IF ELSE FOR TO STEP EXEC
 NUMBER BOOLEAN 
 OPENPAREN CLOSEPAREN 
@@ -88,15 +91,17 @@ program:
 principal
 | definition principal
 | principal definition
+;
 
 principal:
 DEF PRINCIPAL {add('F');} OPENPAREN CLOSEPAREN OPENBRACKET body CLOSEBRACKET
-
+;
  
 
 definition:
 routine 
 | routine  definition
+;
 
 args:
 NUMBER
@@ -104,6 +109,7 @@ NUMBER
 | NUMBER args
 | BOOLEAN args
 
+;
 
 instruction:
 assignment 
@@ -111,16 +117,19 @@ assignment
 | arith_funct
 | EXEC routine_id OPENPAREN args CLOSEPAREN 
 | pandereta_op OPENPAREN pandereta_args CLOSEPAREN
+;
 
 body_instructions:
 instruction end_line body_instructions
 | instruction end_line
+;
 
 body:
 IF condition OPEN BRACKET body CLOSEBRACKET
 | IF condition OPENBRACKET body CLOSEBRACKET ELSE OPENBRACKET body CLOSEBRACKET
 | FOR IDENTIFIER TO num_value STEP num_value OPENBRACKET body CLOSEBRACKET
 | body_instructions
+;
 
 condition:
 BOOLEAN
@@ -129,24 +138,32 @@ BOOLEAN
 | num_value IGUAL num_value
 | num_value MAYORIGUAL num_value
 | num_value MENORIGUAL num_value
+;
 
 assignment:              
 SET IDENTIFIER value
+;
 
 routine:
 DEF IDENTIFIER {add('F');} OPENPAREN args CLOSEPAREN OPENBRACKET body CLOSEBRACKET
+| DEF IDENTIFIER {add('F');} OPENPAREN CLOSEPAREN OPENBRACKET body CLOSEBRACKET
+;
 
 value:      
 COMMA num_value 
 | COMMA bool_value 
 | COMMA arith_funct
 | POINT bool_funct  
+;
 
 args:
 
+
 num_value: NUMBER { insert_type_constant("Number"); add('C'); insert_type_variable("Number");}
+;
 
 bool_value: BOOLEAN {insert_type_constant("Boolean"); add('C');  insert_type_variable("Boolean");}
+;
 
 operator:
 SUM
@@ -155,16 +172,19 @@ SUM
 | MODULO
 | DIV
 | INT_DIV
+;
 
 arith_funct: 
 num_value 
 | num_value operator arith_funct
 | OPENPAREN arith_funct CLOSEPAREN 
+;
 
 bool_funct: BOOLEAN_OPERATOR
 
 end_line:
 SEMICOLON
+;
 
 pandereta_op:
 MOVABANICO
@@ -173,6 +193,7 @@ MOVABANICO
 | MOVGOLPE
 | MOVVIBRATO
 | MOVMETRONOMO
+;
 
 pandereta_args:
 HACIAARRIBA
@@ -181,9 +202,28 @@ HACIAARRIBA
 | HACIAIZQUIERDA
 | DERECHAIZQUIERDA
 | ARRIBAABAJO
+;
+
+contantes:
+NUMERO 
+| BOOLEAN
+| STRINGCONST
+| NUMERO constantes
+| BOOLEAN constantes
+| STRINGCONST contantes
+;
+
+print_args:
+constantes
+| IDENTIFIER
+| constantes print_args
+| IDENTIFIER print_args
+;
 
 prnt_op:
-PRINT OPENPAREN  CLOSEPAREN
+PRINT OPENPAREN print_args CLOSEPAREN
+;
+
 
 %%
 

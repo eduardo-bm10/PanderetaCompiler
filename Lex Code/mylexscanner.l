@@ -13,6 +13,7 @@ linefeed        \n
 %%
 @([a-zA-Z]|[0-9]|"?"|"_"){2,9} {yylval.id = strdup(yytext);return IDENTIFIER;}
 
+([a-zA-Z]|[0-9]|"?"|"_")+ {yylval.stringconst = strdup(yytext); return STRINGCONST}
 "set" {yylval.set = strdup(yytext); return SET;}
 "def" {yylval.def = strdup(yytext); return DEF;}
 "if" {yylval.if = strdup(yytext); return IF;}
