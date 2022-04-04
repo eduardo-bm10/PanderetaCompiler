@@ -98,7 +98,7 @@ DEF PRINCIPAL {add('F');} OPENPAREN CLOSEPAREN OPENBRACKET body CLOSEBRACKET
 
 definition:
 routine 
-| routine  definition {$$ = node($1, $2)}
+| routine  definition
 ;
 
 args:
@@ -112,7 +112,7 @@ instruction:
 assignment 
 | prnt_op
 | arith_funct
-| EXEC routine_id OPENPAREN args CLOSEPAREN 
+| EXEC IDENTIFIER OPENPAREN args CLOSEPAREN 
 | pandereta_op OPENPAREN pandereta_args CLOSEPAREN
 ;
 
@@ -198,13 +198,13 @@ HACIAARRIBA
 | ARRIBAABAJO
 ;
 
-contantes:
-NUMERO 
+constantes:
+NUMBER 
 | BOOLEAN
 | STRINGCONST
-| NUMERO constantes
+| NUMBER constantes
 | BOOLEAN constantes
-| STRINGCONST contantes
+| STRINGCONST constantes
 ;
 
 print_args:
