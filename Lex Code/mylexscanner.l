@@ -2,6 +2,7 @@
     #include <stdio.h>
     #include<string.h>
     #include<stdlib.h>
+    #include <window.h>
     #include "myscanner.h"
     void extern yyerror(char* s);
 %}
@@ -13,6 +14,7 @@ linefeed        \n
 %%
 @([a-zA-Z]|[0-9]|"?"|"_"){2,9} {yylval.id = strdup(yytext);return IDENTIFIER;}
 
+([a-zA-Z]|[0-9]|"?"|"_")+ {yylval.stringconst = strdup(yytext); return STRINGCONST}
 "set" {yylval.set = strdup(yytext); return SET;}
 "def" {yylval.def = strdup(yytext); return DEF;}
 "if" {yylval.if = strdup(yytext); return IF;}
@@ -43,6 +45,8 @@ linefeed        \n
 "." {yylval.point = strdup(yytext); return POINT;}
 "," {yylval.comma = strdup(yytext);return COMMA;}
 "Neg"|"T"|"F" {yylval.bool_o = strdup(yytext);return BOOLEAN_OPERATOR;}
+"{" {yylval.openbrack = strdup(yytext);return OPENBRACKET;}
+"}" {yylval.closebrack = strdup(yytext);return CLOSEBRACKET;}
 ";"  {yylval.semicolon = strdup(yytext);return SEMICOLON;}
 
 "Principal" {yylval.principal = strdup(yytext); return PRINCIPAL;}
@@ -52,8 +56,9 @@ linefeed        \n
 "Percutor" {yylval.percutor = strdup(yytext);return MOVPERCUTOR;}
 "Golpe" {yylval.golpe = strdup(yytext);return MOVGOLPE;}
 "Vibrato" {yylval.vibrato = strdup(yytext);return MOVVIBRATO;}
-"Metronomo" {yylval.metronomo = strdup(yytext);return MOVMETRONOMO;}
+"Metronomo" {yylval.metronomo = strdup(yytext);return METRONOMO;}
 "println!" {yylval.print = strdup(yytext);return PRINT;}
+
  
 "A" { yylval.arriba = strdup(yytext);return HACIAARRIBA;}
 "B" {yylval.abajo = strdup(yytext);return HACIAABAJO;}
@@ -62,7 +67,8 @@ linefeed        \n
 "DI" {yylval.derechaizquierda = strdup(yytext);return DERECHAIZQUIERDA;}
 "AB" {yylval.arribaabajo = strdup(yytext);return ARRIBAABAJO;}
 
-{linefeed} {yylineo++;}
+
+{linefeed} {yylineno++;}
 {whitespace} ;
 . {invalidToken());}
 
@@ -74,11 +80,11 @@ int yywrap(void){
 }
 void yyerror(char*s)
 {
-	fprintf(stderr, "ERROR ON LINE %d. %s expected.",yylineo,yytext);
+	fprintf(stderr, "ERROR ON LINE %d. %s expected.",yylineno,yytext);
 }
 
 void InvalidToken(){
     printf("ERROR ON LINE %d : \n %s\n", yylineo, yytext);
+    MessageBox(0,"ERROR ON LINE %d : \n %s\n", yylineo, yytext, "INVALID TOKEN", MB_OK );
     exit(0);
 }
-

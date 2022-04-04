@@ -67,12 +67,22 @@ def save_as():
     else:
         print("No file selected")
 
+class ScrollSynch:
+    def __init__(self, Editor, LineCounter):
+        self.Editor = Editor
+        self.LineCounter= LineCounter
+    def scrollboth(self, *args):
+        self.Editor.yview('moveto',args[0])
+        self.LineCounter.yview('moveto',args[0])
 
 textEditor = tk.Text()
 textEditor.pack(side=tk.RIGHT, expand=1)
 
 lineText = LineNumber(main, textEditor, width=1)
 lineText.pack(side=tk.LEFT)
+
+scroller = ScrollSynch(textEditor, lineText)
+textEditor['yscrollcommand'] = scroller.scrollboth
 
 errorFrame = ErrorFrame(main, textEditor)
 
