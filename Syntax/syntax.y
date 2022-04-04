@@ -38,7 +38,12 @@
 
     char* oparen;
     char* cparen;
-    char* op;
+    char* sum;
+    char* min;
+    char* mult;
+    char* modulo;
+    char* div;
+    char* int_div;
     char* comma;
     char* bool_o;
     char* openbrack;
@@ -111,7 +116,16 @@
 %type <bool_val> condition
 %type <int_val> value_1
 %type <bool_val> value_2
-%type <op> operator
+%type <sum> sum_operator
+%type <min> min_operator
+%type <mult> mult_operator
+%type <modulo> modulo_operator
+%type <div> div_operator
+%type <int_div> int_div_operator
+%type <float_val> arith_funct
+%type <bool_o> bool_funct
+%type <comma> end_line
+
 %%
 
 program:
@@ -167,7 +181,7 @@ BOOLEAN
 
 assignment:              
 SET IDENTIFIER value_1 {$2 = $3;}
-| SET IDENTIFIER value_2
+| SET IDENTIFIER value_2 {$2 = $3;}
 ;
 
 routine:
@@ -191,25 +205,29 @@ num_value: NUMBER { insert_type_constant("Number"); add('C'); insert_type_variab
 bool_value: BOOLEAN {insert_type_constant("Boolean"); add('C');  insert_type_variable("Boolean");}
 ;
 
-operator:
-SUM {$$='+';}
-| MIN {$$='-';}
-| MULT {$$='*';}
-| MODULO {$$='%';}
-| DIV {$$='/';}
-| INT_DIV {$$='/';}
+sum_operator: SUM {$$='+';}
+min_operator: MIN {$$='-';}
+mult_operator: MULT {$$='*';}
+modulo_operator: MODULO {$$='%';}
+div_operator: DIV {$$='/';}
+int_div_operator: INT_DIV {$$='/';}
 ;
 
 arith_funct: 
 num_value
-| num_value operator arith_funct
-| OPENPAREN arith_funct CLOSEPAREN 
+| num_value sum_operator arith_funct {$$=$1 + $3;}
+| num_value min_operator arith_funct {$$=$1 - $3;}
+| num_value mult_operator arith_funct {$$=$1 * $3;}
+| num_value modulo_operator arith_funct {$$=$1 % $3;}
+| num_value div_operator arith_funct {$$=$1 / $3;}
+| num_value int_div_operator arith_funct {$$=$1 / $3;}
+| OPENPAREN arith_funct CLOSEPAREN {$$=($2);}
 ;
 
-bool_funct: BOOLEAN_OPERATOR
+bool_funct: BOOLEAN_OPERATOR {$$=$1;}
 
 end_line:
-SEMICOLON
+SEMICOLON {$$=$1;}
 ;
 
 pandereta_op:
