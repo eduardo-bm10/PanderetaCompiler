@@ -67,25 +67,58 @@
 
 }
 
-%token 
-IDENTIFIER 
-STRINGCONST
-SET DEF IF ELSE FOR TO STEP EXEC
-NUMBER BOOLEAN 
-OPENPAREN CLOSEPAREN 
-SUM MIN MULT MODULO DIV INT_DIV 
-MAYOR MENOR IGUAL MAYORIGUAL MENORIGUAL
-OPENBRACKET CLOSEBRACKET
-POINT COMMA SEMICOLON
-BOOLEAN_OPERATOR
-PRINCIPAL MOVABANICO MOVVERTICAL MOVPERCUTOR MOVGOLPE MOVVIBRATO METRONOMO
+%token IDENTIFIER 
+%token STRINGCONST
+%token SET 
+%token DEF 
+%token IF 
+%token ELSE 
+%token FOR 
+%token TO 
+%token STEP 
+%token EXEC
+%token NUMBER 
+%token BOOLEAN 
+%token OPENPAREN 
+%token CLOSEPAREN 
+%token SUM 
+%token MIN 
+%token MULT 
+%token MODULO 
+%token DIV 
+%token INT_DIV 
+%token MAYOR 
+%token MENOR 
+%token IGUAL 
+%token MAYORIGUAL 
+%token MENORIGUAL
+%token OPENBRACKET 
+%token CLOSEBRACKET
+%token POINT 
+%token COMMA 
+%token SEMICOLON
+%token BOOLEAN_OPERATOR
+%token PRINCIPAL 
+%token MOVABANICO 
+%token MOVVERTICAL 
+%token MOVPERCUTOR 
+%token MOVGOLPE 
+%token MOVVIBRATO 
+%token METRONOMO
+%token PRINT
+%token HACIAARRIBA 
+%token HACIAABAJO 
+%token HACIADERECHA 
+%token HACIAIZQUIERDA 
+%token DERECHAIZQUIERDA 
+%token ARRIBAABAJO
 
-PRINT
-HACIAARRIBA HACIAABAJO HACIADERECHA HACIAIZQUIERDA DERECHAIZQUIERDA ARRIBAABAJO
-
+%type <bool_val> condition
+%type <int_val> value_1
+%type <bool_val> value_2
+%type <sum> operator
 %%
 
-/* SIMBOLO INICIAL */
 program:
 principal
 | definition principal
@@ -130,15 +163,16 @@ IF condition OPENBRACKET body CLOSEBRACKET
 
 condition:
 BOOLEAN
-| num_value MAYOR num_value
-| num_value MENOR num_value
-| num_value IGUAL num_value
-| num_value MAYORIGUAL num_value
-| num_value MENORIGUAL num_value
+| num_value MAYOR num_value {$$ = $1 > $3;}
+| num_value MENOR num_value {$$ = $1 < $3;}
+| num_value IGUAL num_value {$$ = $1 == $3;}
+| num_value MAYORIGUAL num_value {$$ = $1 >= $3;}
+| num_value MENORIGUAL num_value {$$ = $1 <= $3;}
 ;
 
 assignment:              
-SET IDENTIFIER value
+SET IDENTIFIER value_1 {$2 = $3;}
+| SET IDENTIFIER value_2
 ;
 
 routine:
@@ -146,11 +180,14 @@ DEF IDENTIFIER {add('F');} OPENPAREN args CLOSEPAREN OPENBRACKET body CLOSEBRACK
 | DEF IDENTIFIER {add('F');} OPENPAREN CLOSEPAREN OPENBRACKET body CLOSEBRACKET
 ;
 
-value:      
-COMMA num_value 
-| COMMA bool_value 
-| COMMA arith_funct
-| POINT bool_funct  
+value_1:      
+COMMA num_value {$$=$2;}
+| COMMA arith_funct {$$=$2;}
+;
+
+value_2:
+COMMA bool_value {$$=$2;}
+| POINT bool_funct  {$$=$2;}
 ;
 
 num_value: NUMBER { insert_type_constant("Number"); add('C'); insert_type_variable("Number");}
@@ -160,16 +197,16 @@ bool_value: BOOLEAN {insert_type_constant("Boolean"); add('C');  insert_type_var
 ;
 
 operator:
-SUM
-| MIN
-| MULT
-| MODULO
-| DIV
-| INT_DIV
+SUM {$$='+';}
+| MIN {$$='-';}
+| MULT {$$='*';}
+| MODULO {$$='%';}
+| DIV {$$='/';}
+| INT_DIV {$$='/';}
 ;
 
 arith_funct: 
-num_value 
+num_value
 | num_value operator arith_funct
 | OPENPAREN arith_funct CLOSEPAREN 
 ;
