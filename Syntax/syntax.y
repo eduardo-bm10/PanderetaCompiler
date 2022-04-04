@@ -16,7 +16,6 @@
     int count=0;
     int q;
     char type[10]
-
 }%
 
 %define parse.lac full
@@ -96,7 +95,6 @@ principal
 principal:
 DEF PRINCIPAL {add('F');} OPENPAREN CLOSEPAREN OPENBRACKET body CLOSEBRACKET
 ;
- 
 
 definition:
 routine 
@@ -108,7 +106,6 @@ NUMBER
 | BOOLEAN
 | NUMBER args
 | BOOLEAN args
-
 ;
 
 instruction:
@@ -253,6 +250,7 @@ int search(char *type){
         }
     }
 }
+
 void add(char c){
     q =search;
     if(!q) {
@@ -286,6 +284,7 @@ void add(char c){
         }
     }
 }
+
 void yyerror(char*s) {
     fprintf(stderr, "SYNTAX ERROR ON LINE %d.", yylineno)
 }

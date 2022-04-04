@@ -2,6 +2,7 @@
     #include <stdio.h>
     #include<string.h>
     #include<stdlib.h>
+    #include <window.h>
     #include "myscanner.h"
     void extern yyerror(char* s);
 %}
@@ -67,7 +68,7 @@ linefeed        \n
 "AB" {yylval.arribaabajo = strdup(yytext);return ARRIBAABAJO;}
 
 
-{linefeed} {yylineo++;}
+{linefeed} {yylineno++;}
 {whitespace} ;
 . {invalidToken());}
 
@@ -79,11 +80,11 @@ int yywrap(void){
 }
 void yyerror(char*s)
 {
-	fprintf(stderr, "ERROR ON LINE %d. %s expected.",yylineo,yytext);
+	fprintf(stderr, "ERROR ON LINE %d. %s expected.",yylineno,yytext);
 }
 
 void InvalidToken(){
     printf("ERROR ON LINE %d : \n %s\n", yylineo, yytext);
+    MessageBox(0,"ERROR ON LINE %d : \n %s\n", yylineo, yytext, "INVALID TOKEN", MB_OK );
     exit(0);
 }
-
