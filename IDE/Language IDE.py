@@ -2,7 +2,7 @@
 
 from cProfile import run
 import tkinter as tk
-import subprocess
+import os
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 
 gpath = ''
@@ -54,15 +54,15 @@ def save_as():
         with open(path, 'w') as file:
             code = textEditor.get('1.0', tk.END)
             file.write(code)
+            gpath = path
     else:
         print("No file selected")
 
 def compile():
-    #global gpath
-    #with open(gpath, 'r') as file:
-    #code = file.read()
-    subprocess.call(["cd", "PanderetaCompiler\Lex Code"])
-    return_code = subprocess.call(["lex", "mylexscanner.l"])
+    global gpath
+    os.chdir(gpath)
+    with open(gpath, 'r') as file:
+        code = file.read()
 
 def run():
     compile()
