@@ -1,6 +1,8 @@
 # IDE CODE TAMBORDUINE
 
+from cProfile import run
 import tkinter as tk
+import subprocess
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 
 gpath = ''
@@ -55,6 +57,18 @@ def save_as():
     else:
         print("No file selected")
 
+def compile():
+    #global gpath
+    #with open(gpath, 'r') as file:
+    #code = file.read()
+    subprocess.call(["cd", "PanderetaCompiler\Lex Code"])
+    return_code = subprocess.call(["lex", "mylexscanner.l"])
+
+def run():
+    compile()
+    
+
+
 class ScrollSynch:
     def __init__(self, Editor, LineCounter):
         self.Editor = Editor
@@ -79,8 +93,8 @@ fileBar.add_command(label='Open', command=open_file)
 fileBar.add_command(label='Save', command=save_as)
 
 runBar = tk.Menu(menuBar, tearoff=0)
-runBar.add_command(label='Compile')
-runBar.add_command(label='Compile and Run')
+runBar.add_command(label='Compile', command=compile)
+runBar.add_command(label='Compile and Run', command=run)
 
 menuBar.add_cascade(label='File', menu=fileBar)
 menuBar.add_cascade(label='Run', menu=runBar)
