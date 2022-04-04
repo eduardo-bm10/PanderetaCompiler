@@ -98,7 +98,7 @@ DEF PRINCIPAL {add('F');} OPENPAREN CLOSEPAREN OPENBRACKET body CLOSEBRACKET
 
 definition:
 routine 
-| routine  definition
+| routine  definition {$$ = node($1, $2)}
 ;
 
 args:
@@ -122,7 +122,7 @@ instruction end_line body_instructions
 ;
 
 body:
-IF condition OPEN BRACKET body CLOSEBRACKET
+IF condition OPENBRACKET body CLOSEBRACKET
 | IF condition OPENBRACKET body CLOSEBRACKET ELSE OPENBRACKET body CLOSEBRACKET
 | FOR IDENTIFIER TO num_value STEP num_value OPENBRACKET body CLOSEBRACKET
 | body_instructions
@@ -152,9 +152,6 @@ COMMA num_value
 | COMMA arith_funct
 | POINT bool_funct  
 ;
-
-args:
-
 
 num_value: NUMBER { insert_type_constant("Number"); add('C'); insert_type_variable("Number");}
 ;
@@ -189,7 +186,7 @@ MOVABANICO
 | MOVPERCUTOR
 | MOVGOLPE
 | MOVVIBRATO
-| MOVMETRONOMO
+| METRONOMO
 ;
 
 pandereta_args:
@@ -286,7 +283,7 @@ void add(char c){
 }
 
 void yyerror(char*s) {
-    fprintf(stderr, "SYNTAX ERROR ON LINE %d.", yylineno)
+    fprintf(stderr, "%s ERROR ON LINE %d.", s, yylineno)
 }
 
 int yywrap(void) {

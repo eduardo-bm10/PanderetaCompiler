@@ -29,18 +29,6 @@ class LineNumber(tk.Text):
         self.insert(1.0, lines)
         self.configure(state='disabled')
 
-
-class ErrorFrame(tk.Text):
-    def __init__(self, master, text_widget):
-        super().__init__(master)
-        self.text_widget = text_widget
-        self.configure(height=5, bg='black', fg='red')
-
-    def show_msg(self, error_msg):
-        self.pack(side=tk.BOTTOM)
-        self.insert(1.0, error_msg)
-
-
 def open_file():
     global gpath
     path = askopenfilename(filetypes=[('Text Files', '*.txt')])
@@ -83,8 +71,6 @@ lineText.pack(side=tk.LEFT)
 
 scroller = ScrollSynch(textEditor, lineText)
 textEditor['yscrollcommand'] = scroller.scrollboth
-
-errorFrame = ErrorFrame(main, textEditor)
 
 menuBar = tk.Menu(main)
 
