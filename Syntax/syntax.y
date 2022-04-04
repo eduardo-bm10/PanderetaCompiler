@@ -38,12 +38,7 @@
 
     char* oparen;
     char* cparen;
-    char* sum;
-    char* min;
-    char* mult;
-    char* mod;
-    char* div;
-    char* int_div;
+    char* op;
     char* comma;
     char* bool_o;
     char* openbrack;
@@ -116,7 +111,7 @@
 %type <bool_val> condition
 %type <int_val> value_1
 %type <bool_val> value_2
-%type <sum> operator
+%type <op> operator
 %%
 
 program:
